@@ -1,40 +1,40 @@
-import React, { useState, useEffect } from "react";
-import { useCookies } from "react-cookie";
-import axios from "axios";
-import { url } from "../const";
-import { Header } from "../components/Header";
-import "./newTask.css"
-import { useHistory } from "react-router-dom";
+import React, { useState, useEffect } from 'react'
+import { useCookies } from 'react-cookie'
+import axios from 'axios'
+import { url } from '../const'
+import { Header } from '../components/Header'
+import './newTask.css'
+import { useHistory } from 'react-router-dom'
 
 export const NewTask = () => {
-  const [selectListId, setSelectListId] = useState();
-  const [lists, setLists] = useState([]);
-  const [title, setTitle] = useState("");
-  const [detail, setDetail] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [cookies] = useCookies();
-  const history = useHistory();
-  const handleTitleChange = (e) => setTitle(e.target.value);
-  const handleDetailChange = (e) => setDetail(e.target.value);
-  const handleSelectList = (id) => setSelectListId(id);
+  const [selectListId, setSelectListId] = useState()
+  const [lists, setLists] = useState([])
+  const [title, setTitle] = useState('')
+  const [detail, setDetail] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
+  const [cookies] = useCookies()
+  const history = useHistory()
+  const handleTitleChange = (e) => setTitle(e.target.value)
+  const handleDetailChange = (e) => setDetail(e.target.value)
+  const handleSelectList = (id) => setSelectListId(id)
   const onCreateTask = () => {
     const data = {
-      title: title,
-      detail: detail,
-      done: false,
-    };
+      title,
+      detail,
+      done: false
+    }
 
     axios.post(`${url}/lists/${selectListId}/tasks`, data, {
-        headers: {
-          authorization: `Bearer ${cookies.token}`
-        }
+      headers: {
+        authorization: `Bearer ${cookies.token}`
+      }
     })
-    .then(() => {
-      history.push("/");
-    })
-    .catch((err) => {
-      setErrorMessage(`タスクの作成に失敗しました。${err}`);
-    })
+      .then(() => {
+        history.push('/')
+      })
+      .catch((err) => {
+        setErrorMessage(`タスクの作成に失敗しました。${err}`)
+      })
   }
 
   useEffect(() => {
@@ -43,13 +43,13 @@ export const NewTask = () => {
         authorization: `Bearer ${cookies.token}`
       }
     })
-    .then((res) => {
-      setLists(res.data)
-      setSelectListId(res.data[0]?.id)
-    })
-    .catch((err) => {
-      setErrorMessage(`リストの取得に失敗しました。${err}`);
-    })
+      .then((res) => {
+        setLists(res.data)
+        setSelectListId(res.data[0]?.id)
+      })
+      .catch((err) => {
+        setErrorMessage(`リストの取得に失敗しました。${err}`)
+      })
   }, [])
 
   return (
