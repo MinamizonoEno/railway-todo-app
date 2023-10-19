@@ -1,37 +1,37 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-import { useCookies } from 'react-cookie'
-import { Redirect, useHistory, Link } from 'react-router-dom'
-import { Header } from '../components/Header'
-import './signin.css'
-import { useDispatch, useSelector } from 'react-redux'
-import { signIn } from '../authSlice'
-import { url } from '../const'
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useCookies } from 'react-cookie';
+import { Redirect, useHistory, Link } from 'react-router-dom';
+import { Header } from '../components/Header';
+import './signin.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { signIn } from '../authSlice';
+import { url } from '../const';
 
 export const SignIn = () => {
-  const auth = useSelector((state) => state.auth.isSignIn)
-  const dispatch = useDispatch()
-  const history = useHistory()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [errorMessage, setErrorMessage] = useState()
-  const [cookies, setCookie, removeCookie] = useCookies()
-  const handleEmailChange = (e) => setEmail(e.target.value)
-  const handlePasswordChange = (e) => setPassword(e.target.value)
+  const auth = useSelector((state) => state.auth.isSignIn);
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState();
+  const [cookies, setCookie, removeCookie] = useCookies();
+  const handleEmailChange = (e) => setEmail(e.target.value);
+  const handlePasswordChange = (e) => setPassword(e.target.value);
   const onSignIn = () => {
     axios
       .post(`${url}/signin`, { email, password })
       .then((res) => {
-        setCookie('token', res.data.token)
-        dispatch(signIn())
-        history.push('/')
+        setCookie('token', res.data.token);
+        dispatch(signIn());
+        history.push('/');
       })
       .catch((err) => {
-        setErrorMessage(`サインインに失敗しました。${err}`)
-      })
-  }
+        setErrorMessage(`サインインに失敗しました。${err}`);
+      });
+  };
 
-  if (auth) return <Redirect to="/" />
+  if (auth) return <Redirect to="/" />;
 
   return (
     <div>
@@ -55,5 +55,5 @@ export const SignIn = () => {
         <Link to="/signup">新規作成</Link>
       </main>
     </div>
-  )
-}
+  );
+};
