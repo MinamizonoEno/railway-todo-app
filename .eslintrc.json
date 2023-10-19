@@ -1,6 +1,8 @@
 {
   "env": {
     "browser": true,
+    "jquery": true,
+    "node": true,
     "es2021": true,
     "jest/globals": true
   },
@@ -11,13 +13,8 @@
   },
   "plugins": ["react", "jest"],
   "rules": {
-    "space-before-function-paren": "off",
-    "react/jsx-filename-extension": "off",
-    "react/jsx-props-no-spreading": "off",
     "react/react-in-jsx-scope": "off",
-    "import/no-extraneous-dependencies": "off",
     "react/prop-types": "off",
     "no-unused-vars": "off"
   }
 }
-
