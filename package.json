@@ -31,6 +31,7 @@
   },
   "scripts": {
     "lint": "eslint --fix --ext .js,.jsx .",
+    "prettier": "prettier --write \"**/*.{js,jsx}\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -55,3 +56,4 @@
     ]
   }
 }
+

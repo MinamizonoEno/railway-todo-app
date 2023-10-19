@@ -18,8 +18,7 @@ export const Router = () => {
       <Switch>
         <Route exact path="/signin" component={SignIn} />
         <Route exact path="/signup" component={SignUp} />
-        {auth
-          ? (
+        {auth ? (
           <>
             <Route exact path="/" component={Home} />
             <Route exact path="/task/new" component={NewTask} />
@@ -27,10 +26,9 @@ export const Router = () => {
             <Route exact path="/lists/:listId/tasks/:taskId" component={EditTask} />
             <Route exact path="/lists/:listId/edit" component={EditList} />
           </>
-            )
-          : (
+        ) : (
           <Redirect to="/signin" />
-            )}
+        )}
         <Route component={NotFound} />
       </Switch>
     </BrowserRouter>
