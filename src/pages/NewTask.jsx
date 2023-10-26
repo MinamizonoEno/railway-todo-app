@@ -12,18 +12,57 @@ export const NewTask = () => {
   const [title, setTitle] = useState('');
   const [detail, setDetail] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [limitYear, setLimitYear] = useState(0);
+  const [limitMonth, setLimitMonth] = useState(0);
+  const [limitDay, setLimitDay] = useState(0);
+  const [limitHour, setLimitHour] = useState(0);
+  const [limitMinute, setLimitMinute] = useState(0);
+  const [limitSecond, setLimitSecond] = useState(0);
+  const [limit, setLimit] = useState(
+    new Date(limitYear, limitMonth, limitDay, limitHour, limitMinute, limitSecond)
+  );
   const [cookies] = useCookies();
   const history = useNavigate();
   const handleTitleChange = (e) => setTitle(e.target.value);
-  const handleDetailChange = (e) => setDetail(e.target.value);
+  const handleDetailChange = (e) => {
+    setDetail(e.target.value);
+    handleLimitChange();
+  };
+  const handleLimitChange = () => {
+    setLimit(new Date(limitYear, limitMonth - 1, limitDay, limitHour, limitMinute, limitSecond));
+  };
+  const handleLimitYearChange = (e) => {
+    setLimitYear(e.target.value);
+    handleLimitChange();
+  };
+  const handleLimitMonthChange = (e) => {
+    setLimitMonth(e.target.value);
+  };
+  const handleLimitDayChange = (e) => {
+    setLimitDay(e.target.value);
+    handleLimitChange();
+  };
+  const handleLimitHourChange = (e) => {
+    setLimitHour(e.target.value);
+    handleLimitChange();
+  };
+  const handleLimitMinuteChange = (e) => {
+    setLimitMinute(e.target.value);
+    handleLimitChange();
+  };
+  const handleLimitSecondChange = (e) => {
+    setLimitSecond(e.target.value);
+    handleLimitChange();
+  };
   const handleSelectList = (id) => setSelectListId(id);
   const onCreateTask = () => {
+    handleLimitChange();
     const data = {
       title,
       detail,
       done: false,
+      limit,
     };
-
     axios
       .post(`${url}/lists/${selectListId}/tasks`, data, {
         headers: {
@@ -78,11 +117,65 @@ export const NewTask = () => {
           <br />
           <input type="text" onChange={handleTitleChange} className="new-task-title" />
           <br />
+          <label>期限</label>
+          <br />
+          <input
+            type="text"
+            onChange={handleLimitYearChange}
+            value={limitYear}
+            className="new-task-limit"
+          />
+          <label>年</label>
+          <input
+            type="text"
+            onChange={handleLimitMonthChange}
+            value={limitMonth}
+            className="new-task-limit"
+          />
+          <label>月</label>
+          <input
+            type="text"
+            onChange={handleLimitDayChange}
+            value={limitDay}
+            className="new-task-limit"
+          />
+          <label>日</label>
+          <input
+            type="text"
+            onChange={handleLimitHourChange}
+            value={limitHour}
+            className="new-task-limit"
+          />
+          <label>時</label>
+          <input
+            type="text"
+            onChange={handleLimitMinuteChange}
+            value={limitMinute}
+            className="new-task-limit"
+          />
+          <label>分</label>
+          <input
+            type="text"
+            onChange={handleLimitSecondChange}
+            value={limitSecond}
+            className="new-task-limit"
+          />
+          <label>秒</label>
+          <br />
           <label>詳細</label>
           <br />
           <textarea type="text" onChange={handleDetailChange} className="new-task-detail" />
           <br />
-          <button type="button" className="new-task-button" onClick={onCreateTask}>
+
+          <button
+            type="button"
+            className="new-task-button"
+            onClick={async () => {
+              await handleLimitChange();
+              await onCreateTask();
+              console.log(limit);
+            }}
+          >
             作成
           </button>
         </form>

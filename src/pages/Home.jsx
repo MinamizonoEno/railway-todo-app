@@ -117,6 +117,7 @@ export const Home = () => {
 const Tasks = (props) => {
   const { tasks, selectListId, isDoneDisplay } = props;
   if (tasks === null) return <></>;
+  const nowDate = new Date();
 
   if (isDoneDisplay === 'done') {
     return (
@@ -131,6 +132,11 @@ const Tasks = (props) => {
                 {task.title}
                 <br />
                 {task.done ? '完了' : '未完了'}
+                <br />
+                期限
+                {task.limit}
+                <br />
+                残り日時
               </Link>
             </li>
           ))}
@@ -144,15 +150,28 @@ const Tasks = (props) => {
         .filter((task) => {
           return task.done === false;
         })
-        .map((task, key) => (
-          <li key={key} className="task-item">
-            <Link to={`/lists/${selectListId}/tasks/${task.id}`} className="task-item-link">
-              {task.title}
-              <br />
-              {task.done ? '完了' : '未完了'}
-            </Link>
-          </li>
-        ))}
+        .map((task, key) => {
+          const limit = new Date(task.limit);
+          return (
+            <li key={key} className="task-item">
+              <Link to={`/lists/${selectListId}/tasks/${task.id}`} className="task-item-link">
+                {task.title}
+                <br />
+                {task.done ? '完了' : '未完了'}
+                <br />
+                期限
+                {task.limit}
+                <br />
+                残り
+                {limit.getUTCFullYear() - nowDate.getUTCFullYear()}年
+                {limit.getUTCMonth() - nowDate.getUTCMonth()}月
+                {limit.getUTCDay() - nowDate.getUTCDay()}日
+                {limit.getHours() - nowDate.getUTCHours()}時
+                {limit.getMinutes() - nowDate.getUTCMinutes()}分
+              </Link>
+            </li>
+          );
+        })}
     </ul>
   );
 };
