@@ -1,7 +1,23 @@
 .taskList {
   margin: 50px auto;
   list-style: none;
-  width: 1000px;
+  width: 900px;
+}
+
+@media screen and (max-width: 768px) {
+  .taskList {
+    margin: 50px auto;
+    list-style: none;
+    width: 600px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .taskList {
+    margin: 50px auto;
+    list-style: none;
+    width: 400px;
+  }
 }
 
 .list {
