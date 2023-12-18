@@ -124,7 +124,6 @@ const Tasks = (props) => {
   const { tasks, selectListId, isDoneDisplay } = props;
   if (tasks === null) return <></>;
   const nowDate = new Date();
-
   if (isDoneDisplay === 'done') {
     return (
       <ul>
@@ -132,20 +131,28 @@ const Tasks = (props) => {
           .filter((task) => {
             return task.done === true;
           })
-          .map((task, key) => (
-            <li key={key} className="task-item">
-              <Link to={`/lists/${selectListId}/tasks/${task.id}`} className="task-item-link">
-                {task.title}
-                <br />
-                {task.done ? '完了' : '未完了'}
-                <br />
-                期限
-                {task.limit}
-                <br />
-                残り日時
-              </Link>
-            </li>
-          ))}
+          .map((task, key) => {
+            const limit = new Date(task.limit);
+            return (
+              <li key={key} className="task-item">
+                <Link to={`/lists/${selectListId}/tasks/${task.id}`} className="task-item-link">
+                  {task.title}
+                  <br />
+                  {task.done ? '完了' : '未完了'}
+                  <br />
+                  期限
+                  {task.limit}
+                  <br />
+                  残り
+                  {limit.getUTCFullYear() - nowDate.getUTCFullYear()}年
+                  {limit.getUTCMonth() - nowDate.getUTCMonth()}月
+                  {limit.getUTCDay() - nowDate.getUTCDay()}日
+                  {limit.getHours() - nowDate.getUTCHours() - 9}時
+                  {limit.getMinutes() - nowDate.getUTCMinutes()}分
+                </Link>
+              </li>
+            );
+          })}
       </ul>
     );
   }
@@ -158,6 +165,14 @@ const Tasks = (props) => {
         })
         .map((task, key) => {
           const limit = new Date(task.limit);
+
+          const LimitTime = (LimitDate, NowDate) => {
+            const nokori = LimitDate.getTime() - NowDate.getTime();
+            const nokorizikan = new Date(nokori);
+            return nokorizikan;
+          };
+          const LimitDate = LimitTime(limit, nowDate);
+
           return (
             <li key={key} className="task-item">
               <Link to={`/lists/${selectListId}/tasks/${task.id}`} className="task-item-link">
@@ -166,14 +181,15 @@ const Tasks = (props) => {
                 {task.done ? '完了' : '未完了'}
                 <br />
                 期限
-                {task.limit}
+                {limit.getFullYear().toString().padStart(4, '0')}年
+                {limit.getMonth().toString().padStart(2, '0')}月
+                {limit.getDate().toString().padStart(2, '0')}日
+                {limit.getHours().toString().padStart(2, '0')}時
+                {limit.getMinutes().toString().padStart(2, '0')}分
                 <br />
                 残り
-                {limit.getUTCFullYear() - nowDate.getUTCFullYear()}年
-                {limit.getUTCMonth() - nowDate.getUTCMonth()}月
-                {limit.getUTCDay() - nowDate.getUTCDay()}日
-                {limit.getHours() - nowDate.getUTCHours()}時
-                {limit.getMinutes() - nowDate.getUTCMinutes()}分
+                {LimitDate.getUTCFullYear()}年{LimitDate.getUTCMonth()}月{LimitDate.getUTCDay()}日
+                {LimitDate.getUTCHours()}時{LimitDate.getUTCMinutes()}分
               </Link>
             </li>
           );

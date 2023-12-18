@@ -13,14 +13,14 @@ export const EditTask = () => {
   const [title, setTitle] = useState('');
   const [detail, setDetail] = useState('');
   const [isDone, setIsDone] = useState();
-  const [limitYear, setLimitYear] = useState();
-  const [limitMonth, setLimitMonth] = useState();
-  const [limitDay, setLimitDay] = useState();
-  const [limitHour, setLimitHour] = useState();
-  const [limitMinute, setLimitMinute] = useState();
-  const [limitSecond, setLimitSecond] = useState();
+  const [limitYear, setLimitYear] = useState(0);
+  const [limitMonth, setLimitMonth] = useState(0);
+  const [limitDay, setLimitDay] = useState(0);
+  const [limitHour, setLimitHour] = useState(0);
+  const [limitMinute, setLimitMinute] = useState(0);
+  const [limitSecond, setLimitSecond] = useState(0);
   const [limit, setLimit] = useState(
-    new Date(limitYear, limitMonth - 1, limitDay, limitHour, limitMinute, limitSecond)
+    new Date(limitYear, limitMonth, limitDay, limitHour, limitMinute, limitSecond)
   );
   const [errorMessage, setErrorMessage] = useState('');
   const handleTitleChange = (e) => setTitle(e.target.value);
@@ -30,7 +30,7 @@ export const EditTask = () => {
   };
   const handleIsDoneChange = (e) => setIsDone(e.target.value === 'done');
   const handleLimitChange = () => {
-    setLimit(new Date(limitYear, limitMonth, limitDay, limitHour, limitMinute, limitSecond));
+    setLimit(new Date(limitYear, limitMonth - 1, limitDay, limitHour, limitMinute, limitSecond));
   };
   const handleLimitYearChange = (e) => {
     setLimitYear(e.target.value);
@@ -38,6 +38,7 @@ export const EditTask = () => {
   };
   const handleLimitMonthChange = (e) => {
     setLimitMonth(e.target.value);
+    handleLimitChange();
   };
   const handleLimitDayChange = (e) => {
     setLimitDay(e.target.value);
@@ -109,12 +110,12 @@ export const EditTask = () => {
         setIsDone(task.done);
         setLimit(task.limit);
         const limitDates = new Date(task.limit);
-        setLimitYear(limitDates.getUTCFullYear());
-        setLimitMonth(limitDates.getUTCMonth() + 1);
-        setLimitDay(limitDates.getUTCDate());
-        setLimitHour(limitDates.getUTCHours());
-        setLimitMinute(limitDates.getUTCMinutes());
-        setLimitSecond(limitDates.getUTCSeconds());
+        setLimitYear(limitDates.getFullYear());
+        setLimitMonth(limitDates.getMonth());
+        setLimitDay(limitDates.getDate());
+        setLimitHour(limitDates.getHours());
+        setLimitMinute(limitDates.getMinutes());
+        setLimitSecond(limitDates.getSeconds());
       })
       .catch((err) => {
         setErrorMessage(`タスク情報の取得に失敗しました。${err}`);
