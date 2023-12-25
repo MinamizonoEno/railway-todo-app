@@ -111,7 +111,7 @@ export const EditTask = () => {
         setLimit(task.limit);
         const limitDates = new Date(task.limit);
         setLimitYear(limitDates.getFullYear());
-        setLimitMonth(limitDates.getMonth());
+        setLimitMonth(limitDates.getMonth() + 1);
         setLimitDay(limitDates.getDate());
         setLimitHour(limitDates.getHours());
         setLimitMinute(limitDates.getMinutes());
